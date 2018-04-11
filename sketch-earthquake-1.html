@@ -55,32 +55,41 @@ function preload() {
 	earthquakes = loadJSON('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson');
 }
 function setup() {
+	//defino n, que es el número de temblores registrados en el JSON
 	n = earthquakes.features.length;
+	//uso n para modificar el título, pero también lo uso en el draw, para establecer la condición a cumplir en el ciclo for
 	document.getElementById("nro").innerHTML= n;
 	console.log(earthquakes);
 	var canvas = createCanvas(windowWidth, windowHeight);
 	canvas.position(0,0);
 	canvas.style('z-index','-1')
 	noLoop();
+	noStroke();
 }
 
 function draw() {
 	for(var x = 0; x < n; x++){
-		var magnitud = earthquakes.features[x].properties.mag;
-		var d = map(magnitud, 4.5, 9.5, 2, width/(n+1));
-		var porcion = width/(n+1)*(x+1);
-		fill(100);
-		noStroke();
-		rect(porcion, height/1.5, d, d+150);
-		fill(200,55);
-		rect(porcion, height/1.5, width/(n+1), width/(n+1));
+		//este es el valor a mapear cada vez que se cumpla la condición de ciclo for (x < n)
+		var mag = earthquakes.features[x].properties.mag;
+		//defino un máximo para mi mapeo
+		var max = height/2;
+		//defino un mínimo para mi mapeo
+		var min = height-(height/9);
+		//ahora hago el mapeo de los posibles valores de mag
+		var h = map(mag, 4.5, 9.5, min, max);
+		//defino la posición de cada barra
+		var b = width/(n+2)*(x+1);
+		//primero dibujo rectángulos negro, noten que uso variable max
 		fill(0);
-		rectMode(CENTER);
-		//textAlign(CENTER);
-		var txt = earthquakes.features[x].properties.mag;
-		text(txt, porcion+2,height/2, 20, 20);
-		var lugar = earthquakes.features[x].properties.place;
-		text(lugar, porcion+2,height*1, 50, width/(n+1));
+		rect(b, max, (width/(n+2))-10, height/2.5);
+		//luego dibujo rectángulos blancos semi-traslúcidos sobre la barra negra. Con el truco de la transparencia queda como si el negro fuese la barra y el gris lo que le falta para llegar al max --> http://i0.kym-cdn.com/entries/icons/original/000/022/138/reece.JPG --> lo que tengo son barras dadas vuelta, por el problema que ya les expliqué de las coordenadas cartesianas
+		fill(255,155);
+		rect(b, h, (width/(n+2))-10, (height/4)-h);
+		//la magnitud
+		fill(100);
+		textSize(16);
+		textAlign(CENTER);
+		text(mag,b,h-18,(width/(n+2))-10,16);
 	}
 }
 </script>
