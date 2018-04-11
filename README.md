@@ -2,7 +2,7 @@
 
 Hay otras maneras de trabajar con *das Diagramm* en p5.js, pero no nos alcanza el tiempo para explorarlas :-/
 
-Por ejemplo: https://jagracar.com/grafica.php
+Por ejemplo: https://github.com/jagracar/grafica.js
 
 Ese ejemplo lo saqué de acá, donde muestra otras bibliotecas-para-la-biblioteca de JavScript que es p5.js: https://p5js.org/libraries/
 
